@@ -1,7 +1,19 @@
+/**
+ * File: assignment3.c
+ *
+ * Author: Anh Nguyen, Linh Nguyen
+ * Date: , 2022
+ * Course: COMP2510
+ *
+ * Summary of File:
+ *
+ * This file contains functions that .
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <string.h> /* memcpy */
+#include "file_handler.h"
 
 /**
  * Main function
@@ -15,6 +27,7 @@
  */
 int main(int argc, char **argv) {
     int option = 0;
+    struct node * head = NULL;
     while (true) {
         printf("\n Choose your option based on the menu below: \n");
         printf("1) Load an input file\n");
@@ -29,7 +42,8 @@ int main(int argc, char **argv) {
         switch (option) {
             case 1: {
                 char inputFile[300];
-                printf("1) Type the file name: \n");
+                head =  NULL;
+                printf("1) Type the file name: ");
                 scanf("%s", &inputFile);
                 FILE *input;
                 input = fopen(inputFile, "r");
@@ -38,23 +52,29 @@ int main(int argc, char **argv) {
                     printf("Error: Can not open a file");
                     exit(1);
                 }
-//                processFile();
+                head = processFile(input);
+                printf("Operation 1 successful!!! \n Seclect another option: \n");
+
                 fclose(input);
                 break;
-
             }
             case 2: {
-//                printf("1) Type the file name: \n");
+                mergeHoles(head);
+                printf("Operation 2 successful!!! \n Seclect another option: \n");
                 break;
 
             }
             case 3: {
-//                printf("1) Type the file name: \n");
+                // always mergedHoles before compaction
+                //mergeHoles(head);
+                compaction(head);
+                printf("Operation 3 successful!!! \n Seclect another option: \n");
                 break;
 
             }
             case 4: {
-//                printf("1) Type the file name: \n");
+                printList(head);
+                printf("Operation 4 successful!!! \n Seclect another option: \n");
                 break;
 
             }
@@ -69,6 +89,6 @@ int main(int argc, char **argv) {
             }
         }
 
-        return 0;
     }
+    return 0;
 }

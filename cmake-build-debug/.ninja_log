@@ -1,0 +1,9 @@
+# ninja log v5
+56	115	6899398494472639	Assignment2.exe	72d2df5aed0e18b
+1	61	6914894990478020	CMakeFiles/assignment3.dir/assignment3.c.obj	58f9b6205c0552f2
+67	132	6914148081012190	Assignment3.exe	2603206c36958423
+61	124	6914894991080536	assignment3.exe	8f367da38afac0b0
+1	7	0	clean	ec0400d030232576
+2	79	6914989831521886	CMakeFiles/assignment3.dir/assignment3.c.obj	58f9b6205c0552f2
+5	86	6914989831581543	CMakeFiles/assignment3.dir/file_handler.c.obj	c4731de27da14e9d
+86	264	6914989833341311	assignment3.exe	144c33a83fdca1d0
