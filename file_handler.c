@@ -6,17 +6,17 @@
 
 int checkValue(char * type, int base, int limit) {
     if (base < 0 || limit <= 0) {
-         printf("error 1");
+         printf("Error: Limit or base is negative value!!");
         return 0;
     }
     if (type[0] != 'P' && type[0] != 'H') {
-         printf("error 2");
+         printf("Error: Type is not H or P character!!");
         return 0;
     }
     if (strlen(type) > 1) {
         for (int i = 1; i < strlen(type); i++) {
             if (isdigit(type[i]) == 0) {
-                 printf("error 3");
+                 printf("Error 3");
                 return 0;
             }
         }
@@ -24,7 +24,12 @@ int checkValue(char * type, int base, int limit) {
     return 1;
 }
 
-
+/**
+ * Function that will push the node from the back of linked list.
+ *
+ * @param head head node
+ * @param temp temp node
+ */
 void pushBack(struct node** head, struct node *temp) {
     temp->next = NULL;
     if (*head == NULL) {
@@ -41,19 +46,22 @@ void pushBack(struct node** head, struct node *temp) {
 struct node* processFile(FILE * input) {
     char buffer[100];
     struct node *head = NULL;
+    //Reads a line from the specified stream and stores it into the string pointed to by buffer
     while(fgets(buffer, 100, input) != NULL){
         // Create a new Node
         struct node * temp  = (struct node*) malloc(sizeof(struct node));
+
         sscanf(buffer, "%s %d %d", temp->type, &temp->base,&temp->limit);
 
         temp->next = NULL;
         // Check all values before adding new node to the linked list
-        if (checkValue(temp->type, temp->base, temp->limit) == 0) { 
+        if (checkValue(temp->type, temp->base, temp->limit)) {
             // If any value is invalid, exit the function
             printf("Error: Invalid value!");
             return NULL;
         }
         pushBack(&head, temp);
+        printf("Operation 1 successful!!! \n Seclect another option: \n");
     }
 //    if ((head != NULL) && (head->base !=0))
 //    {
@@ -68,10 +76,11 @@ struct node* processFile(FILE * input) {
     return head;
 }
 
+
 void printList(struct node* head) {
     struct node* curr = head;
     while (curr != NULL) {
-        printf("%s %d %d\n", curr->type, curr->base, curr->limit);
+        printf("Node: %s, base = %d, limit = %d\n", curr->type, curr->base, curr->limit);
         curr = curr->next;
     }
 }
@@ -155,6 +164,10 @@ int max(int a, int b) {
     return (a > b) ? a : b;
 }
 
+/**
+ *
+ * @param head of a node
+ */
 void mergeHoles(struct node *head) {
     struct node *curr = head;
     struct node *nextPtr = NULL;
@@ -169,6 +182,7 @@ void mergeHoles(struct node *head) {
                 // delete node next
                 curr->next = curr->next->next;
             } else {
+
                 curr = curr->next;
             }
         } else {
@@ -184,13 +198,12 @@ void compaction(struct node * head) {
         nextPtr = curr->next;
         // move memory block to the current hole position
         if ((curr->type[0] == 'H') && (nextPtr->type[0] == 'P')) {
-            if ((curr->base+curr->limit) > nextPtr->base)
-            {
+            if ((curr->base + curr->limit) > nextPtr->base) {
                 printf("Error: Overlapped between memory blocks.");
                 return;
             }
 
-            if ((curr->base+curr->limit) < nextPtr->base) {
+            if ((curr->base + curr->limit) < nextPtr->base) {
                 printf("Error: Gap between memory blocks.");
                 return;
             }
@@ -200,7 +213,7 @@ void compaction(struct node * head) {
             int holeLimit = curr->limit;
             curr->limit= nextPtr->limit;
             strcpy(nextPtr->type, "H");
-            nextPtr->base = curr->base+curr->limit;
+            nextPtr->base = curr->base + curr->limit;
             nextPtr->limit = holeLimit;
             curr = nextPtr;
         } else if ((curr->type[0] == 'H') && (nextPtr->type[0] == 'H')) {

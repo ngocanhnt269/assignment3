@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
                     exit(1);
                 }
                 head = processFile(input);
-                printf("Operation 1 successful!!! \n Seclect another option: \n");
+
 
                 fclose(input);
                 break;
@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
             }
             case 3: {
                 // always mergedHoles before compaction
-                //mergeHoles(head);
+                //mergeHoles(head);                //mergeHoles(head);
                 compaction(head);
                 printf("Operation 3 successful!!! \n Seclect another option: \n");
                 break;
@@ -74,9 +74,8 @@ int main(int argc, char **argv) {
             }
             case 4: {
                 printList(head);
-                printf("Operation 4 successful!!! \n Seclect another option: \n");
+//                printf("Operation 4 successful!!! \n Seclect another option: \n");
                 break;
-
             }
             case 5: {
                 exit(0);
