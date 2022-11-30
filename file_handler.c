@@ -55,13 +55,13 @@ struct node* processFile(FILE * input) {
 
         temp->next = NULL;
         // Check all values before adding new node to the linked list
-        if (checkValue(temp->type, temp->base, temp->limit)) {
+        if (checkValue(temp->type, temp->base, temp->limit)==0) {
             // If any value is invalid, exit the function
             printf("Error: Invalid value!");
             return NULL;
         }
         pushBack(&head, temp);
-        printf("Operation 1 successful!!! \n Seclect another option: \n");
+//        printf("Operation 1 successful!!! \n Seclect another option: \n");
     }
 //    if ((head != NULL) && (head->base !=0))
 //    {
