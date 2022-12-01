@@ -189,8 +189,6 @@ void mergeHoles(struct node *head) {
     while ((curr!= NULL) && (curr->next != NULL)) {
         nextPtr = curr->next;
 
-        // merge 2 holes if they are overlapped
-        // Can 2 holes overlapped?
         if ((curr->type[0]=='H') && (nextPtr->type[0] == 'H')) {
             if ((curr->base + curr->limit) >= nextPtr->base) {
                 curr->limit = max(curr->limit,nextPtr->base+ nextPtr->limit-curr->base);
@@ -213,16 +211,6 @@ void compaction(struct node * head) {
         nextPtr = curr->next;
         // move memory block to the current hole position
         if ((curr->type[0] == 'H') && (nextPtr->type[0] == 'P')) {
-            if ((curr->base + curr->limit) > nextPtr->base) {
-                printf("Error: Overlapped between memory blocks.");
-                return;
-            }
-
-            if ((curr->base + curr->limit) < nextPtr->base) {
-                printf("Error: Gap between memory blocks.");
-                return;
-            }
-
             // move memory to the front
             strcpy(curr->type, nextPtr->type);
             int holeLimit = curr->limit;
