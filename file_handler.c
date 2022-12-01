@@ -73,9 +73,7 @@ struct node* processFile(FILE * input) {
     while(fgets(buffer, 100, input) != NULL){
         // Create a new Node
         struct node * temp  = (struct node*) malloc(sizeof(struct node));
-
         sscanf(buffer, "%s %d %d", temp->type, &temp->base,&temp->limit);
-
         temp->next = NULL;
         // Check all values before adding new node to the linked list
         if (checkValue(temp->type, temp->base, temp->limit)==0) {
@@ -85,7 +83,6 @@ struct node* processFile(FILE * input) {
         }
         pushBack(&head, temp);
     }
-
     mergeSort(&head);
     saniticheck(head);
     return head;
@@ -112,11 +109,9 @@ void mergeSort(struct node ** headPtr) {
     if (h == NULL || h->next == NULL) {
         return;
     }
-
     /* Divides the linked list into 2 halves (sublists). */
     struct node * slow = h;
     struct node * fast = h->next;
-
     while (fast != NULL) {
         // fast pointer advances 2 times faster than slow pointer
         fast = fast->next;
@@ -160,7 +155,6 @@ struct node * merge (struct node * first, struct node * second) {
         }
         temp = temp->next;
     }
-
     while (first != NULL) {
         temp->next = first;
         first = first->next;
