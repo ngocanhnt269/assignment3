@@ -45,7 +45,7 @@ int checkValue(struct node * head, char * type, int base, int limit) {
     if (head != NULL) {
       struct node * current = head;
       while (current != NULL) {
-        if (strcmp(current->type, type) == 0) {
+        if (strcmp(current->type, type) == 0 && strlen(type) > 1) {
           printf("Error: 2 processes have same name!!\n");
           return 0;
         }
