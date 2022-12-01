@@ -42,6 +42,7 @@ int checkValue(struct node * head, char * type, int base, int limit) {
             }
         }
     }
+
     if (head != NULL) {
       struct node * current = head;
       while (current != NULL) {
@@ -82,6 +83,11 @@ void pushBack(struct node** head, struct node *temp) {
 void saniticheck(struct node * head){
     struct node * curr = head;
     struct node * nextPtr = NULL;
+    //check memory block start at 0
+    if(head != NULL && head -> base != 0){
+        printf("Error: Memory block does not start from 0");
+        exit(0);
+    }
 
     while ((curr != NULL) && (curr->next != NULL)) {
         nextPtr = curr->next;
@@ -95,6 +101,7 @@ void saniticheck(struct node * head){
             printf("Error: Memory blocks have gap between");
             exit(0);
         }
+
         curr = curr->next;
     }
 }
