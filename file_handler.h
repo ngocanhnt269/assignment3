@@ -12,6 +12,8 @@
 #include <math.h>
 
 #endif //ASSIGNMENT3_C_FILE_HANDLER_H
+
+/* Struct node for Linked List. */
 struct node {
     char type[3];
     int base;
@@ -19,8 +21,7 @@ struct node {
     struct node * next;
 };
 
-/* Struct node for Linked List. */
-
+/* Function prototypes. */
 int checkValue(char * type, int base, int limit);
 void pushBack(struct node** head, struct node * temp);
 struct node * processFile(FILE * input);

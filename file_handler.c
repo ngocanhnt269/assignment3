@@ -1,22 +1,43 @@
+/**
+ * File: assignment3.c
+ *
+ * Author: Anh Nguyen, Linh Nguyen
+ * Date: Nov 30, 2022
+ * Course: COMP2510
+ *
+ * Summary of File:
+ *
+ * This file contains functions that simulate memory management.
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> /* memcpy */
 #include <ctype.h> /* isdigit */
 #include "file_handler.h"
 
+/**
+ * Checks type, base and limit values before adding node to the linked list.
+ *
+ * @param type hole or process
+ * @param base starting index
+ * @param limit length of block
+ * @return
+ */
 int checkValue(char * type, int base, int limit) {
     if (base < 0 || limit <= 0) {
-         printf("Error: Limit or base is negative value!!");
+         printf("Error: Invalid base/limit !!");
         return 0;
     }
     if (type[0] != 'P' && type[0] != 'H') {
-         printf("Error: Type is not H or P character!!");
+         printf("Error: Type does not start with 'P' or 'H' !!");
         return 0;
     }
     if (strlen(type) > 1) {
         for (int i = 1; i < strlen(type); i++) {
-            if (isdigit(type[i]) == 0) {
-                 printf("Error 3");
+            if (isdigit(type[i]) == 0) { // Check if type "process" is in format "P%"
+                 printf("Error: Invalid process name!!");
                 return 0;
             }
         }
@@ -25,10 +46,10 @@ int checkValue(char * type, int base, int limit) {
 }
 
 /**
- * Function that will push the node from the back of linked list.
+ * Function that will push the node to the back of linked list.
  *
  * @param head head node
- * @param temp temp node
+ * @param temp node to add to linked list
  */
 void pushBack(struct node** head, struct node *temp) {
     temp->next = NULL;
@@ -43,13 +64,15 @@ void pushBack(struct node** head, struct node *temp) {
     curr->next = temp;
 }
 
+/**
+ * Checks whether or not two memory blocks overlap/have gap between.
+ *
+ * @param head the head node of linked list
+ */
 void saniticheck(struct node * head){
     struct node * curr = head;
     struct node * nextPtr = NULL;
-    // check if base starts at 0 or not
-//    if((head != NULL) && (head->base !=0)){
-//        printf("Error: Memory block needs to start from 0");
-//    }
+
     while ((curr != NULL) && (curr->next != NULL)) {
         nextPtr = curr->next;
         // check overlapped
@@ -66,6 +89,13 @@ void saniticheck(struct node * head){
     }
 }
 
+/**
+ * Reads each line from the input file, then creates a node
+ * and pushes it to the linked list.
+ *
+ * @param input pointer to the input file
+ * @return the head node of linked list
+ */
 struct node* processFile(FILE * input) {
     char buffer[100];
     struct node *head = NULL;
@@ -83,12 +113,16 @@ struct node* processFile(FILE * input) {
         }
         pushBack(&head, temp);
     }
-    mergeSort(&head);
+    mergeSort(&head); // Sort the linked list
     saniticheck(head);
     return head;
 }
 
-
+/**
+ * Prints the whole linked list.
+ *
+ * @param head the head node of linked list
+ */
 void printList(struct node* head) {
     struct node* curr = head;
     while (curr != NULL) {
@@ -169,11 +203,19 @@ struct node * merge (struct node * first, struct node * second) {
     return result->next;
 }
 
+/**
+ * Finds the maximum value between 2 integers.
+ *
+ * @param a first integer
+ * @param b second integer
+ * @return max value
+ */
 int max(int a, int b) {
     return (a > b) ? a : b;
 }
 
 /**
+ * Merges the consecutive free blocks (holes).
  *
  * @param head of a node
  */
@@ -182,14 +224,13 @@ void mergeHoles(struct node *head) {
     struct node *nextPtr = NULL;
     while ((curr!= NULL) && (curr->next != NULL)) {
         nextPtr = curr->next;
-
+        // check if two consecutive nodes both have type as 'H'
         if ((curr->type[0]=='H') && (nextPtr->type[0] == 'H')) {
             if ((curr->base + curr->limit) >= nextPtr->base) {
                 curr->limit = max(curr->limit,nextPtr->base+ nextPtr->limit-curr->base);
                 // delete node next
                 curr->next = curr->next->next;
             } else {
-
                 curr = curr->next;
             }
         } else {
@@ -198,6 +239,11 @@ void mergeHoles(struct node *head) {
     }
 }
 
+/**
+ * Pushes all nodes representing free blocks to the end of the linked list.
+ *
+ * @param head the head of linked list
+ */
 void compaction(struct node * head) {
     struct node * curr = head;
     struct node * nextPtr = NULL;

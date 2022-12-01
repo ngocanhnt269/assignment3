@@ -2,12 +2,12 @@
  * File: assignment3.c
  *
  * Author: Anh Nguyen, Linh Nguyen
- * Date: , 2022
+ * Date: Nov 30, 2022
  * Course: COMP2510
  *
  * Summary of File:
  *
- * This file contains functions that .
+ * This file contains functions that simulate memory management.
  */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
         printf("3) Compact memory\n");
         printf("4) Print memory view\n");
         printf("5) Exit the program\n");
-
+        printf("Option: ");
         // Get and save the number the user types
         scanf("%d", &option);
 
@@ -53,28 +53,23 @@ int main(int argc, char **argv) {
                     exit(1);
                 }
                 head = processFile(input);
-
-
                 fclose(input);
                 break;
             }
             case 2: {
                 mergeHoles(head);
-                printf("Operation 2 successful!!! \n Seclect another option: \n");
+                printf("Operation 2 successful!!! \n Select another option: \n");
                 break;
 
             }
             case 3: {
-                // always mergedHoles before compaction
-                //mergeHoles(head);                //mergeHoles(head);
                 compaction(head);
-                printf("Operation 3 successful!!! \n Seclect another option: \n");
+                printf("Operation 3 successful!!! \n Select another option: \n");
                 break;
 
             }
             case 4: {
                 printList(head);
-//                printf("Operation 4 successful!!! \n Seclect another option: \n");
                 break;
             }
             case 5: {
@@ -87,7 +82,6 @@ int main(int argc, char **argv) {
                 break;
             }
         }
-
     }
     return 0;
 }
