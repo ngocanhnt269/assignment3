@@ -219,9 +219,9 @@ struct node * merge (struct node * first, struct node * second) {
  * @param b second integer
  * @return max value
  */
-int max(int a, int b) {
-    return (a > b) ? a : b;
-}
+//int max(int a, int b) {
+//    return (a > b) ? a : b;
+//}
 
 /**
  * Merges the consecutive free blocks (holes).
@@ -237,8 +237,8 @@ void mergeHoles(struct node *head) {
         if ((curr->type[0]=='H') && (nextPtr->type[0] == 'H')) {
             if ((curr->base + curr->limit) >= nextPtr->base) {
                 //
-                 curr->limit = max(curr->limit,(nextPtr->base + nextPtr->limit) - curr->base); // if can overlapped
-//                curr->limit = curr->limit + curr->base;
+//                 curr->limit = max(curr->limit,(nextPtr->base + nextPtr->limit) - curr->base); // if can overlapped
+                curr->limit = nextPtr->base + nextPtr->limit - curr->base;
                 // delete node next
                 curr->next = curr->next->next;
             } else {
@@ -260,9 +260,8 @@ void compaction(struct node * head) {
     struct node * nextPtr = NULL;
     while ((curr != NULL) && (curr->next !=NULL)) {
         nextPtr = curr->next;
-        // move memory block to the current hole position
+        // Exchange positions of 'H' and 'P' blocks
         if ((curr->type[0] == 'H') && (nextPtr->type[0] == 'P')) {
-            // move memory to the front
             strcpy(curr->type, nextPtr->type); // copy type of nextPtr to current type
             int holeLimit = curr->limit; // store limit value
             curr->limit= nextPtr->limit; // point current limit = value of P
@@ -271,10 +270,10 @@ void compaction(struct node * head) {
             nextPtr->limit = holeLimit; //update limit of H
             curr = nextPtr;
         } else if ((curr->type[0] == 'H') && (nextPtr->type[0] == 'H')) {
-            //If 2 "H", we do the same as merge hole
+            // Merge two consecutive 'H' blocks
             if ((curr->base + curr->limit) >= nextPtr->base) {
 //                curr->limit = max(curr->limit,(nextPtr->base+ nextPtr->limit) - curr->base);
-                curr->limit = curr->limit + curr->base;
+                curr->limit = nextPtr->base+ nextPtr->limit - curr->base;
                 // delete node next
                 curr->next = curr->next->next;
             } else {
