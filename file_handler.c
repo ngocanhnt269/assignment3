@@ -236,7 +236,9 @@ void mergeHoles(struct node *head) {
         // check if two consecutive nodes both have type as 'H'
         if ((curr->type[0]=='H') && (nextPtr->type[0] == 'H')) {
             if ((curr->base + curr->limit) >= nextPtr->base) {
-                curr->limit = max(curr->limit,nextPtr->base+ nextPtr->limit-curr->base);
+                //
+                 curr->limit = max(curr->limit,(nextPtr->base + nextPtr->limit) - curr->base); // if can overlapped
+//                curr->limit = curr->limit + curr->base;
                 // delete node next
                 curr->next = curr->next->next;
             } else {
@@ -261,16 +263,18 @@ void compaction(struct node * head) {
         // move memory block to the current hole position
         if ((curr->type[0] == 'H') && (nextPtr->type[0] == 'P')) {
             // move memory to the front
-            strcpy(curr->type, nextPtr->type);
-            int holeLimit = curr->limit;
-            curr->limit= nextPtr->limit;
-            strcpy(nextPtr->type, "H");
-            nextPtr->base = curr->base + curr->limit;
-            nextPtr->limit = holeLimit;
+            strcpy(curr->type, nextPtr->type); // copy type of nextPtr to current type
+            int holeLimit = curr->limit; // store limit value
+            curr->limit= nextPtr->limit; // point current limit = value of P
+            strcpy(nextPtr->type, "H"); // update the nextPtr to "H"
+            nextPtr->base = curr->base + curr->limit; // update base of H = (base P + limit)
+            nextPtr->limit = holeLimit; //update limit of H
             curr = nextPtr;
         } else if ((curr->type[0] == 'H') && (nextPtr->type[0] == 'H')) {
+            //If 2 "H", we do the same as merge hole
             if ((curr->base + curr->limit) >= nextPtr->base) {
-                curr->limit = max(curr->limit,nextPtr->base+ nextPtr->limit-curr->base);
+//                curr->limit = max(curr->limit,(nextPtr->base+ nextPtr->limit) - curr->base);
+                curr->limit = curr->limit + curr->base;
                 // delete node next
                 curr->next = curr->next->next;
             } else {
