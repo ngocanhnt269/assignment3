@@ -22,7 +22,7 @@ struct node {
 };
 
 /* Function prototypes. */
-int checkValue(char * type, int base, int limit);
+int checkValue(struct node * head, char * type, int base, int limit);
 void pushBack(struct node** head, struct node * temp);
 struct node * processFile(FILE * input);
 void printList(struct node* head);

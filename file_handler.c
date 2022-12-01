@@ -25,22 +25,32 @@
  * @param limit length of block
  * @return
  */
-int checkValue(char * type, int base, int limit) {
+int checkValue(struct node * head, char * type, int base, int limit) {
     if (base < 0 || limit <= 0) {
-         printf("Error: Invalid base/limit !!");
+         printf("Error: Invalid base/limit !!\n");
         return 0;
     }
     if (type[0] != 'P' && type[0] != 'H') {
-         printf("Error: Type does not start with 'P' or 'H' !!");
+         printf("Error: Type does not start with 'P' or 'H' !!\n");
         return 0;
     }
     if (strlen(type) > 1) {
         for (int i = 1; i < strlen(type); i++) {
             if (isdigit(type[i]) == 0) { // Check if type "process" is in format "P%"
-                 printf("Error: Invalid process name!!");
+                 printf("Error: Invalid process name!!\n");
                 return 0;
             }
         }
+    }
+    if (head != NULL) {
+      struct node * current = head;
+      while (current != NULL) {
+        if (strcmp(current->type, type) == 0) {
+          printf("Error: 2 processes have same name!!\n");
+          return 0;
+        }
+        current = current->next;
+      }
     }
     return 1;
 }
@@ -106,9 +116,8 @@ struct node* processFile(FILE * input) {
         sscanf(buffer, "%s %d %d", temp->type, &temp->base,&temp->limit);
         temp->next = NULL;
         // Check all values before adding new node to the linked list
-        if (checkValue(temp->type, temp->base, temp->limit)==0) {
+        if (checkValue(head,temp->type, temp->base, temp->limit)==0) {
             // If any value is invalid, exit the function
-            printf("Error: Invalid value!");
             return NULL;
         }
         pushBack(&head, temp);
