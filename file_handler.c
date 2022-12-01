@@ -77,12 +77,12 @@ void saniticheck(struct node * head){
         nextPtr = curr->next;
         // check overlapped
         if ((curr-> base + curr-> limit) > (nextPtr-> base)){
-            printf("Error: overlapped ");
+            printf("Error: Memory blocks are overlapped ");
             exit(0);
         }
         // check if any gap between memory and holes
         if ((curr-> base + curr -> limit) < (nextPtr->base)){
-            printf("Error: have gap between");
+            printf("Error: Memory blocks have gap between");
             exit(0);
         }
         curr = curr->next;
