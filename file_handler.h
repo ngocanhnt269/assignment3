@@ -30,3 +30,4 @@ struct node * merge (struct node * first, struct node * second);
 void mergeHoles(struct node *head);
 int max(int a, int b);
 void compaction(struct node * head);
+void saniticheck(struct node * head);

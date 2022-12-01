@@ -43,6 +43,29 @@ void pushBack(struct node** head, struct node *temp) {
     curr->next = temp;
 }
 
+void saniticheck(struct node * head){
+    struct node * curr = head;
+    struct node * nextPtr = NULL;
+    // check if base starts at 0 or not
+//    if((head != NULL) && (head->base !=0)){
+//        printf("Error: Memory block needs to start from 0");
+//    }
+    while ((curr != NULL) && (curr->next != NULL)) {
+        nextPtr = curr->next;
+        // check overlapped
+        if ((curr-> base + curr-> limit) > (nextPtr-> base)){
+            printf("Error: overlapped ");
+            exit(0);
+        }
+        // check if any gap between memory and holes
+        if ((curr-> base + curr -> limit) < (nextPtr->base)){
+            printf("Error: have gap between");
+            exit(0);
+        }
+        curr = curr->next;
+    }
+}
+
 struct node* processFile(FILE * input) {
     char buffer[100];
     struct node *head = NULL;
@@ -61,18 +84,10 @@ struct node* processFile(FILE * input) {
             return NULL;
         }
         pushBack(&head, temp);
-//        printf("Operation 1 successful!!! \n Seclect another option: \n");
     }
-//    if ((head != NULL) && (head->base !=0))
-//    {
-//        printf("Error: Memory does not start from 0.");
-//        return NULL;
-//    }
-//    printf("\nBefore sorting: \n");
-//    printList(head);
+
     mergeSort(&head);
-//    printf("\nAfter sorting: \n");
-//    printList(head);
+    saniticheck(head);
     return head;
 }
 
